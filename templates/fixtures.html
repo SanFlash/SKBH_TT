@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament Fixtures - Table Tennis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/additional.css') }}">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏓 Table Tennis Tournament</h1>
+            <nav class="nav">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/fixtures" class="nav-link active">Fixtures</a>
+                <a href="/standings" class="nav-link">Standings</a>
+                <a href="/match-entry" class="nav-link">Match Entry</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Fixtures Management -->
+            <section class="fixtures-management">
+                <h2>Fixture Management</h2>
+                <div class="management-controls">
+                    <div class="control-group">
+                        <label for="group-select">Select Group:</label>
+                        <select id="group-select" class="form-control">
+                            <option value="A">Group A</option>
+                            <option value="B">Group B</option>
+                            <option value="C">Group C</option>
+                            <option value="D">Group D</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <button id="generate-fixtures" class="btn btn-primary">
+                            <i class="fas fa-sync"></i> Generate Fixtures
+                        </button>
+                        <button id="add-player" class="btn btn-secondary">
+                            <i class="fas fa-user-plus"></i> Add Player
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Players Management -->
+            <section class="players-management">
+                <h3>Current Players</h3>
+                <div class="players-grid" id="players-grid">
+                    <!-- Dynamic player cards -->
+                </div>
+            </section>
+
+            <!-- Fixtures Display -->
+            <section class="fixtures-display">
+                <h3>Match Fixtures</h3>
+                <div class="fixtures-controls">
+                    <div class="filter-controls">
+                        <button class="filter-btn active" data-filter="all">All Matches</button>
+                        <button class="filter-btn" data-filter="pending">Upcoming</button>
+                        <button class="filter-btn" data-filter="completed">Completed</button>
+                    </div>
+                    <div class="round-controls">
+                        <label for="round-filter">Round:</label>
+                        <select id="round-filter" class="form-control">
+                            <option value="all">All Rounds</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fixtures-container" id="fixtures-container">
+                    <!-- Dynamic fixtures -->
+                </div>
+            </section>
+
+            <!-- Fixture Generation Modal -->
+            <div class="modal" id="player-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add New Player</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <form id="player-form" class="modal-body">
+                        <div class="form-group">
+                            <label for="player-name">Player Name:</label>
+                            <input type="text" id="player-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="player-group">Group:</label>
+                            <select id="player-group" class="form-control" required>
+                                <option value="A">Group A</option>
+                                <option value="B">Group B</option>
+                                <option value="C">Group C</option>
+                                <option value="D">Group D</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Add Player</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="connection-status" id="connection-status">
+        <span class="status-indicator" id="status-indicator"></span>
+        <span id="connection-text">Connecting...</span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/fixtures.js') }}"></script>
+</body>
+</html>

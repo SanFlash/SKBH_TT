@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Tennis Tournament Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/additional.css') }}">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏓 Table Tennis Tournament</h1>
+            <nav class="nav">
+                <a href="/" class="nav-link active">Dashboard</a>
+                <a href="/fixtures" class="nav-link">Fixtures</a>
+                <a href="/standings" class="nav-link">Standings</a>
+                <a href="/match-entry" class="nav-link">Match Entry</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Tournament Overview -->
+            <section class="overview-section">
+                <h2>Tournament Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-players">0</div>
+                        <div class="stat-label">Total Players</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="completed-matches">0</div>
+                        <div class="stat-label">Completed Matches</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-matches">0</div>
+                        <div class="stat-label">Upcoming Matches</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="live-matches">0</div>
+                        <div class="stat-label">Live Matches</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Group Selection -->
+            <section class="group-selection">
+                <h2>Select Group</h2>
+                <div class="group-buttons">
+                    <button class="group-btn active" data-group="A">Group A</button>
+                    <button class="group-btn" data-group="B">Group B</button>
+                    <button class="group-btn" data-group="C">Group C</button>
+                    <button class="group-btn" data-group="D">Group D</button>
+                </div>
+            </section>
+
+            <!-- Current Group Standings -->
+            <section class="standings-section">
+                <h2>Current Standings - Group A</h2>
+                <div class="standings-table-container">
+                    <table class="standings-table" id="standings-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>MP</th>
+                                <th>W</th>
+                                <th>L</th>
+                                <th>SW</th>
+                                <th>SL</th>
+                                <th>SD</th>
+                                <th>PF</th>
+                                <th>PA</th>
+                                <th>PD</th>
+                                <th>Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-tbody">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Qualification Predictions -->
+            <section class="qualification-section">
+                <h2>Qualification Predictions</h2>
+                <div class="predictions-grid" id="predictions-grid">
+                    <!-- Dynamic content -->
+                </div>
+            </section>
+
+            <!-- Recent Matches -->
+            <section class="recent-matches">
+                <h2>Recent Matches</h2>
+                <div class="matches-list" id="recent-matches">
+                    <!-- Dynamic content -->
+                </div>
+            </section>
+
+            <!-- Upcoming Matches -->
+            <section class="upcoming-matches">
+                <h2>Upcoming Matches</h2>
+                <div class="matches-list" id="upcoming-matches">
+                    <!-- Dynamic content -->
+                </div>
+            </section>
+
+            <!-- Tournament Statistics -->
+            <section class="statistics-section">
+                <h2>Tournament Statistics</h2>
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>Points Distribution</h3>
+                        <canvas id="pointsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Win/Loss Ratio</h3>
+                        <canvas id="winLossChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Connection Status -->
+        <div class="connection-status" id="connection-status">
+            <span class="status-indicator" id="status-indicator"></span>
+            <span id="connection-text">Connecting...</span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

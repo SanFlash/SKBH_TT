@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Entry - Table Tennis Tournament</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/additional.css') }}">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏓 Table Tennis Tournament</h1>
+            <nav class="nav">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/fixtures" class="nav-link">Fixtures</a>
+                <a href="/standings" class="nav-link">Standings</a>
+                <a href="/match-entry" class="nav-link active">Match Entry</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Match Selection -->
+            <section class="match-selection">
+                <h2>Match Result Entry</h2>
+                <div class="selection-controls">
+                    <div class="control-group">
+                        <label for="group-select">Select Group:</label>
+                        <select id="group-select" class="form-control">
+                            <option value="A">Group A</option>
+                            <option value="B">Group B</option>
+                            <option value="C">Group C</option>
+                            <option value="D">Group D</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="match-select">Select Match:</label>
+                        <select id="match-select" class="form-control">
+                            <option value="">-- Choose a match --</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Match Details -->
+            <section class="match-details" id="match-details" style="display: none;">
+                <div class="match-info-card">
+                    <h3>Match Information</h3>
+                    <div class="match-players">
+                        <div class="player-box">
+                            <h4 id="player1-name">Player 1</h4>
+                            <div class="player-stats">
+                                <span id="player1-stats">0 wins, 0 losses</span>
+                            </div>
+                        </div>
+                        <div class="vs-indicator">VS</div>
+                        <div class="player-box">
+                            <h4 id="player2-name">Player 2</h4>
+                            <div class="player-stats">
+                                <span id="player2-stats">0 wins, 0 losses</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="match-meta">
+                        <span id="match-round">Round 1</span>
+                        <span id="match-group">Group A</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Score Entry -->
+            <section class="score-entry" id="score-entry" style="display: none;">
+                <h3>Enter Match Scores</h3>
+                <div class="score-instructions">
+                    <p>Enter the scores for each set. The first player to win 3 sets wins the match.</p>
+                    <p>Enter scores in format: Player 1 Score - Player 2 Score</p>
+                </div>
+
+                <div class="sets-container" id="sets-container">
+                    <!-- Dynamic set entries -->
+                </div>
+
+                <div class="score-actions">
+                    <button id="add-set" class="btn btn-secondary">
+                        <i class="fas fa-plus"></i> Add Set
+                    </button>
+                    <button id="remove-set" class="btn btn-danger" style="display: none;">
+                        <i class="fas fa-minus"></i> Remove Set
+                    </button>
+                </div>
+
+                <div class="score-preview" id="score-preview">
+                    <h4>Match Preview</h4>
+                    <div id="preview-content">
+                        <!-- Dynamic preview -->
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button id="submit-result" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save"></i> Submit Result
+                    </button>
+                    <button id="cancel-entry" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </section>
+
+            <!-- Recent Results -->
+            <section class="recent-results">
+                <h3>Recent Match Results</h3>
+                <div class="results-list" id="recent-results">
+                    <!-- Dynamic recent results -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="connection-status" id="connection-status">
+        <span class="status-indicator" id="status-indicator"></span>
+        <span id="connection-text">Connecting...</span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/match_entry.js') }}"></script>
+</body>
+</html>

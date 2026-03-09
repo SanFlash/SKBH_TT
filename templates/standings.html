@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Standings - Table Tennis Tournament</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/additional.css') }}">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏓 Table Tennis Tournament</h1>
+            <nav class="nav">
+                <a href="/" class="nav-link">Dashboard</a>
+                <a href="/fixtures" class="nav-link">Fixtures</a>
+                <a href="/standings" class="nav-link active">Standings</a>
+                <a href="/match-entry" class="nav-link">Match Entry</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <!-- Standings Controls -->
+            <section class="standings-controls">
+                <h2>Tournament Standings</h2>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="group-select">Select Group:</label>
+                        <select id="group-select" class="form-control">
+                            <option value="A">Group A</option>
+                            <option value="B">Group B</option>
+                            <option value="C">Group C</option>
+                            <option value="D">Group D</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="view-select">View Mode:</label>
+                        <select id="view-select" class="form-control">
+                            <option value="table">Points Table</option>
+                            <option value="chart">Chart View</option>
+                            <option value="detailed">Detailed Stats</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <button id="refresh-standings" class="btn btn-primary">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                        <button id="export-csv" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Points Table View -->
+            <section class="points-table-view" id="points-table-view">
+                <h3>Points Table - Group A</h3>
+                <div class="table-container">
+                    <table class="standings-table" id="standings-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>MP</th>
+                                <th>W</th>
+                                <th>L</th>
+                                <th>SW</th>
+                                <th>SL</th>
+                                <th>SD</th>
+                                <th>PF</th>
+                                <th>PA</th>
+                                <th>PD</th>
+                                <th>Points</th>
+                                <th>Form</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-tbody">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Qualification Status -->
+                <div class="qualification-status">
+                    <h4>Qualification Status</h4>
+                    <div class="qualification-grid" id="qualification-grid">
+                        <!-- Dynamic qualification info -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chart View -->
+            <section class="chart-view" id="chart-view" style="display: none;">
+                <h3>Standings Charts - Group A</h3>
+                <div class="charts-container">
+                    <div class="chart-wrapper">
+                        <h4>Points Distribution</h4>
+                        <canvas id="pointsChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h4>Win/Loss Ratio</h4>
+                        <canvas id="winLossChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h4>Set Difference</h4>
+                        <canvas id="setDiffChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h4>Points Difference</h4>
+                        <canvas id="pointDiffChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Stats View -->
+            <section class="detailed-view" id="detailed-view" style="display: none;">
+                <h3>Detailed Statistics - Group A</h3>
+                <div class="stats-container">
+                    <div class="stat-section">
+                        <h4>Performance Metrics</h4>
+                        <div class="metrics-grid" id="metrics-grid">
+                            <!-- Dynamic metrics -->
+                        </div>
+                    </div>
+                    
+                    <div class="stat-section">
+                        <h4>Head-to-Head Records</h4>
+                        <div class="h2h-container" id="h2h-container">
+                            <!-- Dynamic H2H records -->
+                        </div>
+                    </div>
+                    
+                    <div class="stat-section">
+                        <h4>Trends & Analysis</h4>
+                        <div class="trends-container" id="trends-container">
+                            <!-- Dynamic trends -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Movement Indicators -->
+            <section class="movement-section">
+                <h3>Ranking Movements</h3>
+                <div class="movements-grid" id="movements-grid">
+                    <!-- Dynamic movement indicators -->
+                </div>
+            </section>
+
+            <!-- League Summary -->
+            <section class="league-summary">
+                <h3>League Summary</h3>
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <h4>Matches Completed</h4>
+                        <div class="summary-number" id="completed-count">0</div>
+                        <div class="summary-trend" id="completed-trend">--</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Average Points</h4>
+                        <div class="summary-number" id="avg-points">0</div>
+                        <div class="summary-trend" id="points-trend">--</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Closest Battle</h4>
+                        <div class="summary-text" id="closest-battle">--</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Dominant Player</h4>
+                        <div class="summary-text" id="dominant-player">--</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="connection-status" id="connection-status">
+        <span class="status-indicator" id="status-indicator"></span>
+        <span id="connection-text">Connecting...</span>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/standings.js') }}"></script>
+</body>
+</html>
